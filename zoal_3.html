@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tabel</title>
+    <style>
+        table {
+            width: 60%; border: 1px double black;
+            border-collapse: collapse;
+        }
+        th, td {
+            height: 30px; border: 1px double black;
+            border-collapse: collapse;
+        }
+    
+    </style>
+</head>
+<body>
+    <center>
+    Nama: <input id='name' type="text" onload="data()" placeholder="masukkan nama ...">
+    Tgl. Lahir: <input id='tgl' type="date" onload="data()" placeholder="masukkan tanggal lahir...">
+    Kota: <input id='city' type="text" onload="data()" placeholder="masukkan kota ..."><br/><br/>
+    <button onclick="data()">Daftar</button><br/><br/>
+    <button onclick="sortnameasc()">Sort Nama Ascending</button>
+    <button onclick="sortnamedesc()">Sort Nama Descending</button>
+    <button onclick="sortageasc()">Sort Usia Ascending</button>
+    <button onclick="sortagedesc()">Sort Usia Descending</button>
+    <button onclick="sortcityasc()">Sort Kota Ascending</button>
+    <button onclick="sortcitydesc()">Sort Kota Descending</button>
+    <br><br>
+    <p></p>
+    <table>
+        <thead id="thead"></thead>
+        <tbody id="tbody" onclick="hapus(this.value)"></tbody>
+    </table>
+    </center>
+    <script>
+    var users=[];
+        function data(){
+            document.getElementById("thead").innerHTML=
+            '<tr><th>Nama</th><th colspan="3">Tanggal Lahir</th><th>Zodiak</th><th>Usia</th><th>Pensiun</th><th>Kota</th><th>Hapus</th></tr>'
+            
+            var bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus',
+            'September','Oktober','November','Desember'];
+            
+            var tgl=document.getElementById('tgl').value;
+            var x=new Date(tgl);
+
+            var date=x.getDate();
+            var month=bulan[x.getMonth()];
+            var year=x.getFullYear();
+
+            document.getElementById("tbody").innerHTML=''
+            var usia1=function(){
+                        var y= new Date()
+                        return(
+                            y.getFullYear() - year
+                        );
+                    }
+            var pensiun1=function(){
+                        return(
+                            usia1()-55 
+                        );
+                    }
+
+            if(date>=21 && month=='Maret'||date<=19 && month=='April'){
+                var zod='Aries' 
+            }
+            else if(date>=20 && month=='April'||date<=20 && month=='Mei'){
+                var zod='Taurus' 
+            }
+            else if(date>=21 && month=='Mei'||date<=20 && month=='Juni'){
+                var zod='Gemini' 
+            }
+            else if(date>=21 && month=='Juni'||date<=22 && month=='Juli'){
+                var zod='Cancer' 
+            }
+            else if(date>=23 && month=='Juli'||date<=22 && month=='Agustus'){
+                var zod='Leo' 
+            }
+            else if(date>=23 && month=='Agustus'||date<=22 && month=='September'){
+                var zod='Virgo' 
+            }
+            else if(date>=23 && month=='September'||date<=22 && month=='Oktober'){
+                var zod='Libra' 
+            }
+            else if(date>=23 && month=='Oktober'||date<=21 && month=='November'){
+                var zod='Scorpio' 
+            }
+            else if(date>=22 && month=='November'||date<=21 && month=='Desember'){
+                var zod='Sagitarius' 
+            }
+            else if(date>=22 && month=='Desember'||date<=19 && month=='Januari'){
+                var zod='Capricorn' 
+            }
+            else if(date>=20 && month=='Januari'||date<=18 && month=='Februari'){
+                var zod='Aquarius' 
+            }
+            else{
+                var zod='Pisces' 
+            }
+
+            var dataUser={
+                nama: document.getElementById('name').value,
+                tanggal: date,
+                bulan: month,
+                tahun: year,
+                usia: usia1(),
+                kota: document.getElementById('city').value,
+                zodiak: zod,
+                pensiun: pensiun1()
+            }            
+
+            users.push(dataUser)
+            for(var i=0;i<users.length;i++){
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value)" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }   
+        
+        }
+
+        function sortnameasc(){
+            document.getElementById("tbody").innerHTML='';
+            for(var i=0;i<users.length;i++){
+                users.sort(function(a,b){
+                    if(a.nama==b.nama){
+                        return 0;
+                    }
+                    else if(a.nama<b.nama){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                })
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value)" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }
+        }  
+        function sortnamedesc(){
+            document.getElementById("tbody").innerHTML='';
+            for(var i=0;i<users.length;i++){
+                users.sort(function(a,b){
+                    if(a.nama==b.nama){
+                        return 0;
+                    }
+                    else if(a.nama<b.nama){
+                        return 1;
+                    }
+                    else{
+                        return -1;
+                    }
+                })
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value))" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }
+        } 
+
+        function sortageasc(){
+            document.getElementById("tbody").innerHTML=''
+            for(var i=0;i<users.length;i++){
+                users.sort(function(a,b){
+                return a.usia-b.usia;
+                })
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value)" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }
+        }  
+
+        function sortagedesc(){
+            document.getElementById("tbody").innerHTML=''
+            for(var i=0;i<users.length;i++){
+                users.sort(function(a,b){
+                return b.usia-a.usia;
+                })
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value)" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }
+        }
+
+        function sortcityasc(){
+            document.getElementById("tbody").innerHTML = '';
+            for(var i=0;i<users.length;i++){
+                users.sort(function(a,b){
+                    if(a.kota==b.kota){
+                        return 0;
+                    }
+                    else if(a.kota<b.kota){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                })
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value)" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }
+        }  
+        function sortcitydesc(){
+            document.getElementById("tbody").innerHTML='';
+            for(var i=0;i<users.length;i++){
+                users.sort(function(a,b){
+                    if(a.kota==b.kota){
+                        return 0;
+                    }
+                    else if(a.kota<b.kota){
+                        return 1;
+                    }
+                    else{
+                        return -1;
+                    }
+                })
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="submit" onclick="hapus(this.value)" value="Hapus"></input>' + '</th>'+
+                '</tr>'
+            }
+
+            function hapus(r){
+                var i = r.parentNode.parentNode.rowIndex;
+                    document.getElementById("tbody").deleteRow(i);
+                // document.getElementById("tbody").innerHTML='';
+                // for(var i=0;i<users.length;i++){
+                // document.getElementById("tbody").innerHTML-=
+                // '<tr>' +
+                // '<th>' + users[i].nama + '</th>' +
+                // '<th>' + users[i].tanggal + '</th>' +
+                // '<th>' + users[i].bulan + '</th>' +
+                // '<th>' + users[i].tahun + '</th>' +
+                // '<th>' + users[i].zodiak + '</th>' +
+                // '<th>' + users[i].usia + '</th>' +
+                // '<th>' + users[i].pensiun + '</th>' +
+                // '<th>' + users[i].kota + '</th>' +
+                // '<th>' + '<input type="submit" onclick="hapus()" value="Hapus"></input>' + '</th>'+
+                // '</tr>'}
+            }
+        }
+        
+    </script>
+</body>
+</html>
